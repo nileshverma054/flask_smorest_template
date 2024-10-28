@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "flask-smorest-template"
+name = "app"
 version = "0.1.0"
 description = "Template for creating REST API using flask-smorest"
 authors = ["nileshverma054 <nileshverma054@gmail.com>"]

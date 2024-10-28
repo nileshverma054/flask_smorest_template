@@ -1,0 +1,12 @@
+services:
+  web:
+    command: python -m flask run --host=0.0.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
