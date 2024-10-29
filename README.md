@@ -25,3 +25,9 @@ poetry install
 ```bash
 flask run
 ```
+
+## Run test
+
+```bash
+pytest
+```
