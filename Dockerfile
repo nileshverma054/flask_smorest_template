@@ -22,5 +22,7 @@ ENV VIRTUAL_ENV=/.venv \
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 COPY app app
-# gunicorn -b 0.0.0.0:3000 app:app
+
+EXPOSE 3000
+
 CMD [ "python", "-m", "gunicorn", "-b", "0.0.0.0:3000", "app:app"]
