@@ -1,38 +1,26 @@
-# Dockerfile
+# Build stage
 FROM python:3.13-slim as builder
 
-# Install system dependencies
-RUN apt-get update && \
-    apt-get install -y curl && \
-    curl -sSL https://install.python-poetry.org | python3 -
+ENV POETRY_NO_INTERACTION=1 \
+    POETRY_VIRTUALENVS_IN_PROJECT=1 \
+    POETRY_VIRTUALENVS_CREATE=1 \
+    POETRY_CACHE_DIR=/tmp/poetry_cache \
+    POETRY_VERSION=1.8.3
 
-# Set working directory
-WORKDIR /app
+RUN pip install poetry==$POETRY_VERSION
 
-# Copy poetry files
 COPY pyproject.toml poetry.lock ./
 
-# Configure poetry to not create virtual environment
-RUN /root/.local/bin/poetry config virtualenvs.create false
-
-# Install dependencies
-RUN /root/.local/bin/poetry install --no-dev --no-interaction --no-ansi
+RUN poetry install --no-root && rm -rf $POETRY_CACHE_DIR
 
 # Final stage
-FROM python:3.13-slim
+FROM python:3.13-slim as runtime
 
-# Set working directory
-WORKDIR /app
+ENV VIRTUAL_ENV=/.venv \
+    PATH="/.venv/bin:$PATH"
 
-# Copy dependencies from builder
-COPY --from=builder /usr/local/lib/python3.13/site-packages/ /usr/local/lib/python3.13/site-packages/
+COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
-# Copy application code
-COPY . .
-
-
-# Expose port
-EXPOSE 5000
-
-# Run the application
-CMD ["python", "-m", "flask", "run", "--host=0.0.0.0"]
+COPY app app
+# gunicorn -b 0.0.0.0:3000 app:app
+CMD [ "python", "-m", "gunicorn", "-b", "0.0.0.0:3000", "app:app"]

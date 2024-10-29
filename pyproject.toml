@@ -8,10 +8,9 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "3.13"
 flask-smorest = "^0.44.0"
-
-
-[tool.poetry.group.dev.dependencies]
+gunicorn = "^23.0.0"
 python-dotenv = "^1.0.1"
+
 
 [build-system]
 requires = ["poetry-core"]

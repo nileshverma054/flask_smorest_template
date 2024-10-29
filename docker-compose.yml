@@ -1,12 +1,15 @@
 services:
   web:
-    command: python -m flask run --host=0.0.0.0
+    # command: python -m flask run --host 0.0.0.0
+    # command: python -m gunicorn -b 0.0.0.0:3000 app:app
+    image: flask_smorest_template
+    container_name: flask_smorest_template
     build:
       context: .
       dockerfile: Dockerfile
     env_file:
       - .env
     volumes:
-      - .:/app
+      - ./app:/app
     ports:
       - "3000:3000"

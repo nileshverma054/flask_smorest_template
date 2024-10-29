@@ -6,16 +6,6 @@ api = Api(
         "title": "Flask-smorest API",
         "host": "localhost",
         "version": "1.0.0",
-        "x-internal-id": "1",
-        "security": [{"bearerAuth": []}],
-        "components": {
-            "securitySchemes": {
-                "bearerAuth": {
-                    "type": "http",
-                    "scheme": "bearer",
-                    "bearerFormat": "JWT",
-                }
-            }
-        },
+        "x-internal-id": "1"
     }
 )
